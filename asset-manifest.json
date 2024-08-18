@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/casual-contact-us/static/js/main.61c8ae25.js",
+    "main.js": "/casual-contact-us/static/js/main.5cb778be.js",
     "index.html": "/casual-contact-us/index.html",
-    "main.61c8ae25.js.map": "/casual-contact-us/static/js/main.61c8ae25.js.map"
+    "main.5cb778be.js.map": "/casual-contact-us/static/js/main.5cb778be.js.map"
   },
   "entrypoints": [
-    "static/js/main.61c8ae25.js"
+    "static/js/main.5cb778be.js"
   ]
 }
