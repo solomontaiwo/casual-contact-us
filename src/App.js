@@ -7,6 +7,7 @@ const App = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [clickCount, setClickCount] = useState(0);
   const buttonRef = useRef(null);
+  const containerRef = useRef(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -23,12 +24,12 @@ const App = () => {
   }, []);
 
   const moveButton = () => {
-    if (buttonRef.current) {
-      const buttonWidth = buttonRef.current.offsetWidth;
-      const buttonHeight = buttonRef.current.offsetHeight;
+    if (buttonRef.current && containerRef.current) {
+      const buttonRect = buttonRef.current.getBoundingClientRect();
+      const containerRect = containerRef.current.getBoundingClientRect();
 
-      const maxX = windowSize.width - buttonWidth;
-      const maxY = windowSize.height - buttonHeight;
+      const maxX = containerRect.width - buttonRect.width;
+      const maxY = containerRect.height - buttonRect.height;
 
       const newX = Math.max(0, Math.min(maxX, Math.random() * maxX));
       const newY = Math.max(0, Math.min(maxY, Math.random() * maxY));
@@ -55,14 +56,19 @@ const App = () => {
   };
 
   return (
-    <div style={{
-      height: '100vh',
-      width: '100vw',
-      position: 'relative',
-      overflow: 'hidden',
-      background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)',
-      fontFamily: 'Arial, sans-serif'
-    }}>
+    <div 
+      ref={containerRef}
+      style={{
+        height: '100vh',
+        width: '100vw',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        overflow: 'hidden',
+        background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)',
+        fontFamily: 'Arial, sans-serif'
+      }}
+    >
       <motion.button
         ref={buttonRef}
         style={{
