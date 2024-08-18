@@ -67,8 +67,6 @@ const App = () => {
         ref={buttonRef}
         style={{
           position: 'absolute',
-          left: `${position.x}px`,
-          top: `${position.y}px`,
           padding: '15px 30px',
           backgroundColor: getButtonColor(),
           color: 'white',
@@ -80,6 +78,7 @@ const App = () => {
           userSelect: 'none',
           touchAction: 'none',
         }}
+        initial={false}
         animate={{ x: position.x, y: position.y }}
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
         variants={buttonVariants}
