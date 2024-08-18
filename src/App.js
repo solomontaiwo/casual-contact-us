@@ -9,9 +9,9 @@ const App = () => {
   });
   const [isMobile, setIsMobile] = useState(false);
   const [clickCount, setClickCount] = useState(0);
+  const [counterPosition, setCounterPosition] = useState(20);
   const buttonRef = useRef(null);
   const containerRef = useRef(null);
-  const [counterPosition, setCounterPosition] = useState({ bottom: 20 });
 
   useEffect(() => {
     const handleResize = () => {
@@ -21,12 +21,11 @@ const App = () => {
         height: visualViewport.height,
       });
       setIsMobile(window.innerWidth <= 768);
-      setCounterPosition({
-        bottom: Math.max(
-          20,
-          window.visualViewport.height - visualViewport.height
-        ),
-      });
+
+      // Adjust the counter's bottom position based on the available viewport height
+      const adjustedBottom =
+        Math.min(visualViewport.height, window.innerHeight) - 40; // Adjust value to keep counter visible
+      setCounterPosition(adjustedBottom);
     };
 
     window.addEventListener("resize", handleResize);
@@ -43,7 +42,9 @@ const App = () => {
       const containerRect = containerRef.current.getBoundingClientRect();
 
       const maxX = containerRect.width - buttonRect.width;
-      const maxY = window.visualViewport.height - buttonRect.height; // Use visualViewport height
+      const maxY =
+        Math.min(window.visualViewport.height, window.innerHeight) -
+        buttonRect.height; // Use visualViewport or innerHeight
 
       const padding = 10;
 
@@ -132,7 +133,7 @@ const App = () => {
       <div
         style={{
           position: "absolute",
-          bottom: "20px",
+          bottom: `${counterPosition}px`, // Use dynamically calculated position
           left: "20px",
           color: "white",
           fontSize: "18px",
