@@ -34,19 +34,13 @@ const App = () => {
       const maxX = containerRect.width - buttonRect.width;
       const maxY = containerRect.height - buttonRect.height;
 
-      // Minimum padding to ensure the button doesn't go too close to the edges
+      // Minimum padding to ensure the button stays fully visible
       const padding = 10;
 
       let newX, newY;
       do {
-        newX = Math.max(
-          padding,
-          Math.min(maxX - padding, Math.random() * maxX)
-        );
-        newY = Math.max(
-          padding,
-          Math.min(maxY - padding, Math.random() * maxY)
-        );
+        newX = Math.random() * (maxX - 2 * padding) + padding;
+        newY = Math.random() * (maxY - 2 * padding) + padding;
       } while (
         Math.abs(newX - position.x) < maxX / 3 &&
         Math.abs(newY - position.y) < maxY / 3
