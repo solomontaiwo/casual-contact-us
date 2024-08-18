@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 
 const App = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
   const [isMobile, setIsMobile] = useState(false);
+  const [clickCount, setClickCount] = useState(0);
   const buttonRef = useRef(null);
 
   useEffect(() => {
@@ -32,6 +34,7 @@ const App = () => {
       const newY = Math.max(0, Math.min(maxY, Math.random() * maxY));
 
       setPosition({ x: newX, y: newY });
+      setClickCount(prevCount => prevCount + 1);
     }
   };
 
@@ -39,31 +42,63 @@ const App = () => {
     moveButton();
   }, [windowSize]);
 
+  const buttonVariants = {
+    hover: {
+      scale: 1.1,
+      boxShadow: "0px 0px 8px rgb(255,255,255)",
+    }
+  };
+
+  const getButtonColor = () => {
+    const hue = (clickCount * 20) % 360;
+    return `hsl(${hue}, 80%, 50%)`;
+  };
+
   return (
-    <div style={{ height: '100vh', width: '100vw', position: 'relative', overflow: 'hidden' }}>
-      <button
+    <div style={{
+      height: '100vh',
+      width: '100vw',
+      position: 'relative',
+      overflow: 'hidden',
+      background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)',
+      fontFamily: 'Arial, sans-serif'
+    }}>
+      <motion.button
         ref={buttonRef}
         style={{
           position: 'absolute',
           left: `${position.x}px`,
           top: `${position.y}px`,
           padding: '15px 30px',
-          backgroundColor: '#007bff',
+          backgroundColor: getButtonColor(),
           color: 'white',
           border: 'none',
-          borderRadius: '5px',
+          borderRadius: '25px',
           cursor: 'pointer',
-          transition: 'all 0.3s ease',
-          fontSize: '16px',
+          fontSize: '18px',
+          fontWeight: 'bold',
           userSelect: 'none',
           touchAction: 'none',
         }}
+        animate={{ x: position.x, y: position.y }}
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        variants={buttonVariants}
+        whileHover="hover"
         onMouseEnter={isMobile ? undefined : moveButton}
         onClick={isMobile ? moveButton : undefined}
         onTouchEnd={isMobile ? (e) => { e.preventDefault(); moveButton(); } : undefined}
       >
         Prova a cliccarmi 😉
-      </button>
+      </motion.button>
+      <div style={{
+        position: 'absolute',
+        bottom: '20px',
+        left: '20px',
+        color: 'white',
+        fontSize: '18px'
+      }}>
+        Clicks: {clickCount}
+      </div>
     </div>
   );
 };
