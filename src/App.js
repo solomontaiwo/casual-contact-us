@@ -96,7 +96,7 @@ const App = () => {
         color: 'white',
         fontSize: '18px'
       }}>
-        Clicks: {clickCount}
+        Tentativi: {clickCount}
       </div>
     </div>
   );
