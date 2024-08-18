@@ -31,8 +31,14 @@ const App = () => {
       const maxX = containerRect.width - buttonRect.width;
       const maxY = containerRect.height - buttonRect.height;
 
-      const newX = Math.max(0, Math.min(maxX, Math.random() * maxX));
-      const newY = Math.max(0, Math.min(maxY, Math.random() * maxY));
+      let newX, newY;
+      do {
+        newX = Math.max(0, Math.min(maxX, Math.random() * maxX));
+        newY = Math.max(0, Math.min(maxY, Math.random() * maxY));
+      } while (
+        Math.abs(newX - position.x) < maxX / 3 &&
+        Math.abs(newY - position.y) < maxY / 3
+      );
 
       return { x: newX, y: newY };
     }
@@ -105,7 +111,11 @@ const App = () => {
         bottom: '20px',
         left: '20px',
         color: 'white',
-        fontSize: '18px'
+        fontSize: '18px',
+        padding: '10px',
+        background: 'rgba(0, 0, 0, 0.5)',
+        borderRadius: '5px',
+        zIndex: 1000
       }}>
         Tentativi: {clickCount}
       </div>
