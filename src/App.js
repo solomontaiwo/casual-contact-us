@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const App = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
   const [isMobile, setIsMobile] = useState(false);
+  const buttonRef = useRef(null);
 
   useEffect(() => {
     const handleResize = () => {
       setWindowSize({ width: window.innerWidth, height: window.innerHeight });
-      setIsMobile(window.innerWidth <= 768); // Assuming 768px as the breakpoint for mobile devices
+      setIsMobile(window.innerWidth <= 768);
     };
 
     window.addEventListener('resize', handleResize);
-    handleResize(); // Call once to set initial state
+    handleResize();
 
     return () => {
       window.removeEventListener('resize', handleResize);
@@ -20,9 +21,18 @@ const App = () => {
   }, []);
 
   const moveButton = () => {
-    const newX = Math.random() * (windowSize.width - 150);
-    const newY = Math.random() * (windowSize.height - 60);
-    setPosition({ x: newX, y: newY });
+    if (buttonRef.current) {
+      const buttonWidth = buttonRef.current.offsetWidth;
+      const buttonHeight = buttonRef.current.offsetHeight;
+
+      const maxX = windowSize.width - buttonWidth;
+      const maxY = windowSize.height - buttonHeight;
+
+      const newX = Math.max(0, Math.min(maxX, Math.random() * maxX));
+      const newY = Math.max(0, Math.min(maxY, Math.random() * maxY));
+
+      setPosition({ x: newX, y: newY });
+    }
   };
 
   useEffect(() => {
@@ -32,6 +42,7 @@ const App = () => {
   return (
     <div style={{ height: '100vh', width: '100vw', position: 'relative', overflow: 'hidden' }}>
       <button
+        ref={buttonRef}
         style={{
           position: 'absolute',
           left: `${position.x}px`,
@@ -51,7 +62,7 @@ const App = () => {
         onClick={isMobile ? moveButton : undefined}
         onTouchEnd={isMobile ? (e) => { e.preventDefault(); moveButton(); } : undefined}
       >
-        Prova a cliccarmi 😉
+        Contact Us
       </button>
     </div>
   );
