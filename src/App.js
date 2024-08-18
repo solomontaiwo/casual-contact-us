@@ -51,7 +51,7 @@ const App = () => {
         onClick={isMobile ? moveButton : undefined}
         onTouchEnd={isMobile ? (e) => { e.preventDefault(); moveButton(); } : undefined}
       >
-        Contact Us
+        Prova a cliccarmi 😉
       </button>
     </div>
   );
