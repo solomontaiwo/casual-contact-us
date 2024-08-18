@@ -9,7 +9,6 @@ const App = () => {
   });
   const [isMobile, setIsMobile] = useState(false);
   const [clickCount, setClickCount] = useState(0);
-  const [counterPosition, setCounterPosition] = useState(20);
   const buttonRef = useRef(null);
   const containerRef = useRef(null);
 
@@ -21,11 +20,6 @@ const App = () => {
         height: visualViewport.height,
       });
       setIsMobile(window.innerWidth <= 768);
-
-      // Adjust the counter's bottom position based on the available viewport height
-      const adjustedBottom =
-        Math.min(visualViewport.height, window.innerHeight) - 40; // Adjust value to keep counter visible
-      setCounterPosition(adjustedBottom);
     };
 
     window.addEventListener("resize", handleResize);
@@ -44,7 +38,7 @@ const App = () => {
       const maxX = containerRect.width - buttonRect.width;
       const maxY =
         Math.min(window.visualViewport.height, window.innerHeight) -
-        buttonRect.height; // Use visualViewport or innerHeight
+        buttonRect.height;
 
       const padding = 10;
 
@@ -133,8 +127,8 @@ const App = () => {
       <div
         style={{
           position: "absolute",
-          bottom: `${counterPosition}px`, // Use dynamically calculated position
-          left: "20px",
+          top: "20px", // Set to top with padding
+          left: "20px", // Set to left with padding
           color: "white",
           fontSize: "18px",
           padding: "10px",
