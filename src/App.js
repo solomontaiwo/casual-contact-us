@@ -23,7 +23,7 @@ const App = () => {
     };
   }, []);
 
-  const moveButton = () => {
+  const calculateNewPosition = () => {
     if (buttonRef.current && containerRef.current) {
       const buttonRect = buttonRef.current.getBoundingClientRect();
       const containerRect = containerRef.current.getBoundingClientRect();
@@ -34,13 +34,18 @@ const App = () => {
       const newX = Math.max(0, Math.min(maxX, Math.random() * maxX));
       const newY = Math.max(0, Math.min(maxY, Math.random() * maxY));
 
-      setPosition({ x: newX, y: newY });
-      setClickCount(prevCount => prevCount + 1);
+      return { x: newX, y: newY };
     }
+    return { x: 0, y: 0 };
+  };
+
+  const moveButton = () => {
+    setPosition(calculateNewPosition());
+    setClickCount(prevCount => prevCount + 1);
   };
 
   useEffect(() => {
-    moveButton();
+    setPosition(calculateNewPosition());
   }, [windowSize]);
 
   const buttonVariants = {
