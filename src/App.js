@@ -1,7 +1,15 @@
+// Lines to import necessary dependencies, React hooks and
+// the motion component from framer-motion for animations.
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
+// This defines the main App component as a functional component
 const App = () => {
+  // The following lines set up state variables using the useState hook:
+  // - position: for the button's position
+  // - windowSize: to store the current window dimensions
+  // - isMobile: to determine if the device is mobile
+  // - clickCount: to track the number of clicks/attempts
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
@@ -9,9 +17,17 @@ const App = () => {
   });
   const [isMobile, setIsMobile] = useState(false);
   const [clickCount, setClickCount] = useState(0);
+
+  // These create refs for the button and container
+  // elements, allowing direct access to DOM elements.
   const buttonRef = useRef(null);
   const containerRef = useRef(null);
 
+  // This useEffect hook sets up a window resize event listener.
+  // It updates the windowSize state and determines if the
+  // device is mobile based on window width. The effect
+  // runs once on component mount and cleans up the event
+  // listener on unmount.
   useEffect(() => {
     const handleResize = () => {
       const visualViewport = window.visualViewport || window;
@@ -30,6 +46,10 @@ const App = () => {
     };
   }, []);
 
+  // This function calculates a new random position
+  // for the button, ensuring it stays within the
+  // container and moves a significant distance from its
+  // previous position.
   const calculateNewPosition = () => {
     if (buttonRef.current && containerRef.current) {
       const buttonRect = buttonRef.current.getBoundingClientRect();
@@ -56,15 +76,21 @@ const App = () => {
     return { x: 0, y: 0 };
   };
 
+  // This function moves the button to a new position
+  // and increments the click count.
   const moveButton = () => {
     setPosition(calculateNewPosition());
     setClickCount((prevCount) => prevCount + 1);
   };
 
+  // This effect recalculates the button position
+  // whenever the window size changes.
   useEffect(() => {
     setPosition(calculateNewPosition());
   }, [windowSize]);
 
+  // This defines animation variants for
+  // the button's hover state.
   const buttonVariants = {
     hover: {
       scale: 1.1,
@@ -72,11 +98,19 @@ const App = () => {
     },
   };
 
+  // This function generates a new color for the
+  // button based on the click count.
   const getButtonColor = () => {
     const hue = (clickCount * 20) % 360;
     return `hsl(${hue}, 80%, 50%)`;
   };
 
+  // The return statement contains the JSX for
+  // rendering the component. It includes:
+  // - A container div with styling
+  // - A motion.button component with various props for
+  //   positioning, styling, and handling interactions
+  // - A div displaying the click count
   return (
     <div
       ref={containerRef}
